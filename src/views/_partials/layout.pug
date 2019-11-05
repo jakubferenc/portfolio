@@ -1,0 +1,92 @@
+// Include pug components and partials
+
+doctype html
+html(lang="cs")
+  head
+    block meta
+      meta(charset="utf-8")
+      meta(http-equiv="X-UA-Compatible" content="IE=edge")
+      meta(name="viewport" content="width=device-width, initial-scale=1")
+
+    block title
+      title jakubferenc.cz &mdash; code | design | philosophy
+
+    block favicon
+      link(rel="icon" type="image/png" href="/assets/img/favicon-32x32.png" sizes="32x32")
+      link(rel="icon" type="image/png" href="/assets/img/favicon-16x16.png" sizes="16x16")
+      link(rel="apple-touch-icon" href="/assets/img/apple-touch-icon-57x57.png")
+      link(rel="apple-touch-icon" sizes="76x76" href="/assets/img/apple-touch-icon-76x76.png")
+      link(rel="apple-touch-icon" sizes="120x120" href="/assets/img/apple-touch-icon-120x120.png")
+      link(rel="apple-touch-icon" sizes="152x152" href="/assets/img/apple-touch-icon-152x152.png")
+
+      <meta name="google-site-verification" content="TUISU3Si652d93sr6HaA9gQvZX8fK2aDi3VyfjPvVw8" />
+      <meta name="msvalidate.01" content="5651FB29C6F4AEE97EA50AEA2610C140" />
+
+      <!-- This site is optimized with the Yoast SEO plugin v12.4 - https://yoast.com/wordpress/plugins/seo/ -->
+      <meta name="description" content="data, design, filosofie"/>
+      <meta name="robots" content="max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
+      <link rel="canonical" href="https://www.jakubferenc.cz/" />
+      <link rel="next" href="https://www.jakubferenc.cz/page/2/" />
+      <meta property="og:locale" content="cs_CZ" />
+      <meta property="og:type" content="website" />
+      <meta property="og:title" content="jakubferenc.cz | data, design, filosofie" />
+      <meta property="og:description" content="data, design, filosofie" />
+      <meta property="og:url" content="https://www.jakubferenc.cz/" />
+      <meta property="og:site_name" content="jakubferenc.cz | data, design, filosofie" />
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:description" content="data, design, filosofie" />
+      <meta name="twitter:title" content="jakubferenc.cz | data, design, filosofie" />
+      <meta name="twitter:site" content="@jakub_ferenc" />
+      <meta name="msvalidate.01" content="5651FB29C6F4AEE97EA50AEA2610C140" />
+      <meta name="google-site-verification" content="TUISU3Si652d93sr6HaA9gQvZX8fK2aDi3VyfjPvVw8" />
+      <script type='application/ld+json' class='yoast-schema-graph yoast-schema-graph--main'>{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://www.jakubferenc.cz/#website","url":"https://www.jakubferenc.cz/","name":"jakubferenc.cz | data, design, filosofie","publisher":{"@id":"https://www.jakubferenc.cz/#/schema/person/"},"potentialAction":{"@type":"SearchAction","target":"https://www.jakubferenc.cz/?s={search_term_string}","query-input":"required name=search_term_string"}},{"@type":"CollectionPage","@id":"https://www.jakubferenc.cz/#webpage","url":"https://www.jakubferenc.cz/","inLanguage":"cs-CZ","name":"jakubferenc.cz | data, design, filosofie","isPartOf":{"@id":"https://www.jakubferenc.cz/#website"},"about":{"@id":"https://www.jakubferenc.cz/#/schema/person/"},"description":"data, design, filosofie"}]}</script>
+      <!-- / Yoast SEO plugin. -->
+
+    - let bodyClass = 'index';
+
+    block vars
+
+
+    block css
+      <!-- inject:css -->
+      link(rel="stylesheet" href="/assets/css/main.css?" + Math.floor(Date.now() / 1000))
+      <!-- endinject -->
+
+    block js
+
+      script.
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-67469595-1', 'auto');
+        ga('send', 'pageview');
+
+
+    block header
+
+    body(class=bodyClass)
+
+      block head
+        include ./header.pug
+
+      block main
+
+      block foot
+        include ./footer.pug
+
+      block photo
+        .container
+          .columns
+            .column.is-full
+              .profile-photo
+                img.profile-right(src="/assets/images/profile-right.jpg")
+                img.profile-left.is-hidden(src="/assets/images/profile-left.jpg")
+
+
+      block javascript
+
+        script(src="/assets/js/app.build.js?" + Math.floor(Date.now() / 1000))
+
+

@@ -1,0 +1,26 @@
+extends ../_partials/layout.pug
+
+block vars
+  - bodyClass = 'academic'
+
+block main
+
+  main
+    .main-container.container
+      .columns
+        .column.is-half-widescreen.is-full
+          .section.section-posts
+            h2.section-title all academic texts
+
+            each article in posts
+              - const isAcademic = article.categories.includes(8);
+
+              if (isAcademic)
+                article.post-thumb
+                  h3.title
+                    a(href=`/article/${article.slug}`) #{article.title.rendered}
+                  - const dateCzech = makeCzechDateFromYMD(article.date.split('T')[0]);
+                  .date #{dateCzech}
+
+block foot
+

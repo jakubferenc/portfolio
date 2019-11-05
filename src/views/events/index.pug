@@ -1,0 +1,25 @@
+extends ../_partials/layout.pug
+
+block vars
+  - bodyClass = 'events'
+
+block main
+
+  main
+    .main-container.container
+      .columns
+        .column.is-half-widescreen.is-full
+          .section.section-posts.section-events
+            h2.section-title all events
+
+            each event in events
+
+              article.post-thumb
+                h3.title
+                  a(href=`${event.link}`) #{event.title}
+                - const dateCzech = makeCzechDateFromYMD(event.date);
+                .date #{dateCzech}
+
+
+block foot
+

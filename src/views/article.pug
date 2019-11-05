@@ -1,0 +1,27 @@
+extends ./_partials/layout.pug
+
+block vars
+  - bodyClass = 'articles'
+
+block main
+
+  main
+    .main-container.container
+      .columns
+        .column.is-half-widescreen.is-full
+          .section.section-posts
+
+            article.post-thumb
+              h1.title #{title}
+              .date #{date}
+
+              // if(excerpt !== undefined && excerpt !== '')
+                .post-excerpt
+                  | !{excerpt}
+
+              .post-content
+                | !{content}
+
+
+block foot
+

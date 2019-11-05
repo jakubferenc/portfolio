@@ -1,0 +1,61 @@
+extends ./_partials/layout.pug
+
+block vars
+  - bodyClass = 'index'
+
+block main
+
+  main
+
+    .main-container.container
+
+      .columns
+        .column.is-half-widescreen
+          .section.home-info
+            p
+              | Hi. I am Jakub Albert Ferenc. Nice to meet
+              | you. As a PhD student, I research <em>🤖cyborgs</em>,
+              | <em>👨‍💻philosophy of technology</em>, <em>🧠cognitive science</em>,
+              | <em>🧬evolutionary thinking</em> and <em>💾media theory</em>.
+              | Apart from that, I work as a <a href="#">UX architect</a>.
+
+      .columns.is-multiline
+        .column.is-half-widescreen.is-full
+          .section.section-posts.section-articles
+            h2.section-title latest articles
+
+            - const limit = 3;
+            - let current = 0;
+
+            each article in posts
+              if (current < limit)
+
+                - const isFiction = article.categories.includes(303);
+                - const isPoetry = article.categories.includes(304);
+                - const isAcademic = article.categories.includes(8);
+
+                if (!isAcademic && !isPoetry && !isFiction)
+                  article.post-thumb
+                    h3.title
+                      a(href=`/article/${article.slug}`) #{article.title.rendered}
+                    - const dateCzech = makeCzechDateFromYMD(article.date.split('T')[0]);
+                    .date #{dateCzech}
+
+                    - current = current + 1
+
+      .columns.is-multiline
+        .column.is-half-widescreen.is-full
+          .section.section-posts.section-events
+            h2.section-title latest events
+
+            - const eventLimit = 5;
+            - let currentEvent = 0;
+            each event in events
+
+              article.post-thumb
+                h3.title
+                  a(href=`${event.link}`) #{event.title}
+                - const dateCzech = makeCzechDateFromYMD(event.date);
+                .date #{dateCzech}
+
+                - currentEvent = currentEvent + 1
