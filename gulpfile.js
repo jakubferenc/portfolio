@@ -24,10 +24,14 @@ const $ = gulpLoadPlugins();
 
 const version = pkg.version;
 
+
 const jsonNastaveni = JSON.parse(fs.readFileSync('./nastaveni.json'));
 
 const WPAPI = require( 'wpapi' );
 
+const ftpSettings = require('./ftp.json');
+var ftp = require( 'vinyl-ftp' );
+var changed = require('gulp-changed')
 // ==========================================
 // 2. FUNCTIONS
 // ==========================================
@@ -380,6 +384,23 @@ gulp.task('wp-build', async (cb) => {
     });
 
     return cb;
+
+});
+
+gulp.task('deployFtp', () => {
+
+  const conn = ftp.create( {
+    host: ftpSettings.ftp.host,
+    user: ftpSettings.ftp.user,
+    password: ftpSettings.ftp.password,
+    parallel: 10,
+    timeOffset: ftpSettings.ftp.time
+  });
+
+  return gulp.src( ftpSettings.globs, {base: ftpSettings.base, buffer: false})
+    .pipe(conn.newerOrDifferentSize(ftpSettings.ftp.dir))
+    .pipe(conn.dest(ftpSettings.ftp.dir))
+    .pipe(browserSync.stream());
 
 });
 
