@@ -56,6 +56,6 @@ block main
                 h3.title
                   a(href=`${event.link}`) #{event.title}
                 - const dateCzech = makeCzechDateFromYMD(event.date);
-                .date #{dateCzech}
+                .date #{dateCzech} | #{event.place}
 
                 - currentEvent = currentEvent + 1
