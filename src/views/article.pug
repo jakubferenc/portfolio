@@ -1,7 +1,9 @@
 extends ./_partials/layout.pug
 
 block vars
-  - bodyClass = 'articles'
+
+
+  - bodyClass = categoryCssClass
 
 block main
 
@@ -15,9 +17,6 @@ block main
               h1.title #{title}
               .date #{date}
 
-              // if(excerpt !== undefined && excerpt !== '')
-                .post-excerpt
-                  | !{excerpt}
 
               .post-content
                 | !{content}

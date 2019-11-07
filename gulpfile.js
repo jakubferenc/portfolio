@@ -243,6 +243,21 @@ const prepareArticleItem = (item) => {
   thisItem.excerpt = item.excerpt.rendered;
   thisItem.content = item.content.rendered;
   thisItem.date = makeCzechDateFromYMD(item.date.split('T')[0]);
+  thisItem.categories = item.categories;
+
+  const isFiction = item.categories.includes(303);
+  const isPoetry = item.categories.includes(304);
+  const isAcademic = item.categories.includes(8);
+
+  if (isFiction) {
+    thisItem.categoryCssClass = 'fiction-poetry';
+  } else if ( isPoetry ) {
+    thisItem.categoryCssClass = 'fiction-poetry poetry';
+  } else if ( isAcademic ) {
+    thisItem.categoryCssClass = 'academic';
+  } else {
+    thisItem.categoryCssClass = 'articles';
+  }
 
   //  html
   gulp.src('src/views/article.pug')
@@ -251,7 +266,7 @@ const prepareArticleItem = (item) => {
         (file) => thisItem
       )
     )
-    .pipe($.pug({pretty: true}))
+    .pipe($.pug({ pretty: true }))
     .pipe($.rename('index.html'))
     .pipe(gulp.dest(`./dist/article/${thisItem.slug}`));
 
@@ -283,7 +298,7 @@ gulp.task('reload', () => {
 
 // pug:index & pug:home (pug -> html)
 gulp.task('pug', () => {
-  return gulp.src('src/views/**/*.pug')
+  return gulp.src(['src/views/**/*.pug', '!src/views/article.pug'])
     .pipe(
       $.data(() => JSON.parse(fs.readFileSync('./data/data_merged.json')))
     )
@@ -292,7 +307,7 @@ gulp.task('pug', () => {
     .pipe(browserSync.stream());
   });
 
-gulp.watch('src/views/**/*.pug', gulp.series('pug', 'reload'));
+gulp.watch(['src/views/**/*.pug', '!src/views/article.pug'], gulp.series('pug', 'reload'));
 gulp.watch('nastaveni.json', gulp.series('pug', 'reload'));
 
 // SASS
@@ -341,10 +356,9 @@ gulp.task('wp-load-data', async (cb) => {
 
   wp.posts().perPage(100).then(( data ) => {
 
-    const obj = {posts: {}};
+    const obj = {};
     obj.posts = data;
-
-    fs.writeFileSync('data/posts.json', JSON.stringify(obj));
+    fs.writeFileSync('./data/posts.json', JSON.stringify(obj));
 
     return cb;
 
