@@ -1,5 +1,28 @@
 {
   "events": [
+
+    {
+      "id": "",
+      "title": "HCI International 2020 conference, Copenhagen",
+      "date": "2020-07-22",
+      "place": "22nd International Conference on Human-computer interaction, Bella Center, Copenhagen, Denmark 19-24 July 2020",
+      "link": "http://hci.international/2020/"
+    },
+    {
+      "id": "",
+      "title": "BA (Hons) Graphic Design, Guest lecture",
+      "date": "2020-05",
+      "place": "Prague College, School of Art & Design",
+      "link": ""
+    },
+
+    {
+      "id": "",
+      "title": "Interdisciplinarita – věda a vzdělání na pomezí oborů",
+      "date": "2019-11-26",
+      "place": "Moving Station (prostor pro současné umění a vzdělávání), Plzeň",
+      "link": "https://hsvv.zcu.cz/aktualne/"
+    },
     {
       "id": "",
       "title": "Aleš Čermák: Distribuce flexibility",

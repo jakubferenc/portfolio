@@ -1,3 +1,7 @@
-RewriteEngine On
-RewriteCond %{HTTPS} off
-RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+# 301 redirects from the old website url structure
+# test with https://htaccess.madewithlove.be/ and https://regex101.com/
+# made by https://www.assemblage.cz
+
+## redirect articles
+RedirectMatch 301 ^\/\d{4}\/\d{2}\/([[:alnum:]-]+)\/? /article/$1/
+# example /2019/04/o-dvou-extremech-mysleni-a-kulturni-eugenice/ ==> /article/o-dvou-extremech-mysleni-a-kulturni-eugenice/

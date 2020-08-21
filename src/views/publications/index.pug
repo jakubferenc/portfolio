@@ -1,0 +1,93 @@
+extends ../_partials/layout.pug
+
+block vars
+  - bodyClass = 'academic'
+
+block main
+
+  main
+    .main-container.container
+      .columns
+        .column.is-half-widescreen.is-full
+          .section.section-posts
+            h2.section-title gitpapers / book chapters
+
+            each publication in publications
+
+              if (publication.type == "paper" || publication.type == "book chapter")
+                article.post-thumb-list
+
+                  .title
+                    a(href=`${publication.link}`) #{publication.title}
+                    if (publication.subtitle)
+                      | : #{publication.subtitle}
+                  p.meta
+                    if (publication.author !== "")
+                      <em>(#{publication.author})</em><br>
+
+                    | !{publication.source}
+
+                  - const postYear = publication.date.split("-")[0]
+                  .date #{postYear} | #{publication.type}
+
+
+
+          .section.section-posts
+            h2.section-title conferences
+
+            each publication in publications
+
+              if (publication.type == "conference")
+                article.post-thumb-list
+
+                  .title
+                    a(href=`${publication.link}`) #{publication.title}
+                    if (publication.subtitle)
+                      | : #{publication.subtitle}
+
+                  p.meta
+                    if (publication.author !== "")
+                      <em>(#{publication.author})</em><br>
+
+                    | !{publication.source}
+
+                  - const postYear = publication.date.split("-")[0]
+                  .date #{postYear} | #{publication.type} | #{publication.place}
+
+          .section.section-posts
+            h2.section-title popular articles
+
+            each publication in publications
+
+              if (publication.type == "popular")
+                article.post-thumb-list
+
+                  .title
+                    a(href=`${publication.link}`) #{publication.title}
+                    if (publication.subtitle)
+                      | : #{publication.subtitle}
+                  p.meta
+                    if (publication.author !== "")
+                      <em>(#{publication.author})</em><br>
+
+                    | !{publication.source}
+
+                  - const postYear = publication.date.split("-")[0]
+                  .date #{postYear} | #{publication.type}
+
+          .section.section-posts
+            h2.section-title unpublished
+
+            each article in posts
+              - const isAcademic = article.categories.includes(8);
+
+              if (isAcademic)
+                article.post-thumb-list
+                  .title
+                    a(href=`/article/${article.slug}`) #{article.title.rendered}
+                  - const dateCzech = makeCzechDateFromYMD(article.date.split('T')[0]);
+                  .date #{dateCzech}
+
+
+block foot
+

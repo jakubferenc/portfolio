@@ -6,19 +6,42 @@ block vars
 block main
 
   main
+
     .main-container.container
       .columns
         .column.is-half-widescreen.is-full
-          .section.section-posts.section-events
-            h2.section-title all events
 
-            each event in events
+          <div class="section section-posts">
 
-              article.post-thumb
-                h3.title
-                  a(href=`${event.link}`) #{event.title}
-                - const dateCzech = makeCzechDateFromYMD(event.date);
-                .date #{dateCzech} | #{event.place}
+            - let currentYear = new Date().getFullYear()
+            - let hasFirstBeenBuilt = false
+
+            each event, key in events
+
+              - const thisPostYear = event.date.split("-")[0]
+
+              if ( (currentYear != thisPostYear) || !hasFirstBeenBuilt )
+
+                - currentYear = thisPostYear
+                - hasFirstBeenBuilt = true
+
+                  h2.section-title #{thisPostYear}
+
+                  .post-thumb-list
+                    .title
+                      a(href=`${event.link}`) #{event.title}
+                    - const dateCzech = makeCzechDateFromYMD(event.date);
+                    .date #{dateCzech} | #{event.place}
+
+
+
+              else
+                .post-thumb-list
+                  .title
+                    a(href=`${event.link}`) #{event.title}
+                  - const dateCzech = makeCzechDateFromYMD(event.date);
+                  .date #{dateCzech} | #{event.place}
+
 
 
 block foot

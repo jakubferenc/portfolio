@@ -10,17 +10,16 @@ block main
     .main-container.container
 
       .columns
-        .column.is-half-widescreen
+        .column.is-full.is-two-thirds-widescreen
           .section.home-info
             p
-              | Hi. I am Jakub Albert Ferenc. Nice to meet
-              | you. As a PhD student, I research <em>🤖cyborgs</em>,
-              | <em>👨‍💻philosophy of technology</em>, <em>🧠cognitive science</em>,
-              | <em>🧬evolutionary thinking</em> and <em>💾media theory</em>.
-              | Apart from that, I work as a <a href="#">UX architect</a> and <a href="#">IT analyst</a>.
+              | Hi. I am Jakub Albert Ferenc. Nice to meet you.
+              | As a PhD student, I research <em>(post)phenomenology</em>,
+              | <em>media theory</em>, <em>extended mind</em>, and <em>philosophy of technology</em>.
+              | Apart from that, I founded a UX design studio <a href="https://www.assemblage.cz">assemblage.cz</a>.
 
       .columns.is-multiline
-        .column.is-half-widescreen.is-full
+        .column.is-two-thirds-widescreen
           .section.section-posts.section-articles
             h2.section-title latest articles
 
@@ -48,14 +47,17 @@ block main
           .section.section-posts.section-events
             h2.section-title latest events
 
-            - const eventLimit = 5;
+            - const eventLimit = 3;
             - let currentEvent = 0;
+
             each event in events
 
-              article.post-thumb
-                h3.title
-                  a(href=`${event.link}`) #{event.title}
-                - const dateCzech = makeCzechDateFromYMD(event.date);
-                .date #{dateCzech} | #{event.place}
+              if (currentEvent < limit)
 
-                - currentEvent = currentEvent + 1
+                article.post-thumb-list
+                  h3.title
+                    a(href=`${event.link}`) #{event.title}
+                  - const dateCzech = makeCzechDateFromYMD(event.date);
+                  .date #{dateCzech} | #{event.place}
+
+                  - currentEvent = currentEvent + 1

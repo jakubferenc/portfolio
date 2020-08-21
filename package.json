@@ -51,6 +51,7 @@
     "gulp-rev-delete-original": "^0.2.3",
     "gulp-sass": "^4.0.2",
     "gulp-sourcemaps": "^2.6.5",
+    "gulp-ssh": "^0.7.0",
     "gulp-template": "^5.0.0",
     "pug-lint": "^2.5.0",
     "pug-lint-config-clock": "^2.0.0",

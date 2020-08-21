@@ -3,6 +3,9 @@
 // 1. DEPENDENCIES
 // ==========================================
 // gulp-dev-dependencies
+
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
 const gulp = require('gulp');
 // check package.json for gulp plugins
 const gulpLoadPlugins = require('gulp-load-plugins');
@@ -30,8 +33,23 @@ const jsonNastaveni = JSON.parse(fs.readFileSync('./nastaveni.json'));
 const WPAPI = require( 'wpapi' );
 
 const ftpSettings = require('./ftp.json');
-var ftp = require( 'vinyl-ftp' );
-var changed = require('gulp-changed')
+const ftp = require( 'vinyl-ftp' );
+const changed = require('gulp-changed')
+
+
+const GulpSSH = require('gulp-ssh')
+
+const configSSH = {
+  host: 'ssh.wellnessfood.savana-hosting.cz',
+  port: 9136,
+  username: 'user',
+  privateKey: fs.readFileSync('C:/Users/jakub/.ssh/id_rsa')
+}
+
+const gulpSSH = new GulpSSH({
+  ignoreErrors: false,
+  sshConfig: configSSH
+})
 // ==========================================
 // 2. FUNCTIONS
 // ==========================================
@@ -239,6 +257,9 @@ config.pug.locals = {
 
 const prepareArticleItem = (item) => {
 
+  const data = JSON.parse(fs.readFileSync('./data/data_merged.json'));
+  const allTags = data.tags;
+
   const thisItem = {};
 
   // create a slug used for image name or the url of detail page
@@ -249,15 +270,27 @@ const prepareArticleItem = (item) => {
   thisItem.date = makeCzechDateFromYMD(item.date.split('T')[0]);
   thisItem.categories = item.categories;
 
-  const isFiction = item.categories.includes(303);
-  const isPoetry = item.categories.includes(304);
+  // prepare tags
+  thisItem.tags = item.tags;
+  thisItem.tags.forEach( (tagID, index, arr) => {
+
+    allTags.forEach( (tagFromAllTags) => {
+      if (tagFromAllTags.id == tagID) {
+        arr[index] = tagFromAllTags.name;
+      }
+    });
+
+  });
+
+  //const isFiction = item.categories.includes(303);
+  //const isPoetry = item.categories.includes(304);
   const isAcademic = item.categories.includes(8);
 
-  if (isFiction) {
+  /*if (isFiction) {
     thisItem.categoryCssClass = 'fiction-poetry';
   } else if ( isPoetry ) {
     thisItem.categoryCssClass = 'fiction-poetry poetry';
-  } else if ( isAcademic ) {
+  } else*/ if ( isAcademic ) {
     thisItem.categoryCssClass = 'academic';
   } else {
     thisItem.categoryCssClass = 'articles';
@@ -344,9 +377,6 @@ gulp.watch('src/js/**/*.js', gulp.series('js', 'reload'));
 gulp.task('images', () => gulp.src('src/images/**/*.{jpg,png,svg,gif}')
     .pipe(gulp.dest('dist/assets/images')));
 
-
-
-
 gulp.task('mergeJson', () => {
   return gulp.src('./data/**/*.json')
   .pipe($.mergeJson({
@@ -355,26 +385,35 @@ gulp.task('mergeJson', () => {
   .pipe(gulp.dest('./data/'));
 });
 
-gulp.task('wp-load-data', async (cb) => {
-  const wp = new WPAPI({ endpoint: 'https://jakubferenc.cz/wp-json' });
+gulp.task('wp-load-data',  async () => {
 
-  wp.posts().perPage(100).then(( data ) => {
+  const wp = new WPAPI({ endpoint: 'https://jakubferenc.cz/wordpress/index.php/wp-json' });
 
+  wp.posts('post').perPage(100).then( async ( data ) => {
     const obj = {};
     obj.posts = data;
     fs.writeFileSync('./data/posts.json', JSON.stringify(obj));
 
-    return cb;
+    await Promise.resolve(true);
 
   }).catch( ( err ) => {
     // handle error
   });
 
-  return cb;
+  wp.tags().perPage(100).then( async ( data ) => {
+    const obj = {};
+    obj.tags = data;
+    fs.writeFileSync('./data/tags.json', JSON.stringify(obj));
+
+    await Promise.resolve(true);
+
+  }).catch( ( err ) => {
+    // handle error
+  });
 
 });
 
-gulp.task('wp-build', async (cb) => {
+gulp.task('wp-build', async () => {
 
     const data = JSON.parse(fs.readFileSync('./data/data_merged.json'));
 
@@ -383,8 +422,13 @@ gulp.task('wp-build', async (cb) => {
 
     });
 
-    return cb;
+    await Promise.resolve(true);
 
+});
+
+gulp.task('copyToDist', () => {
+  return gulp.src('.htaccess')
+  .pipe(gulp.dest('./dist/'));
 });
 
 gulp.task('deployFtp', () => {
@@ -404,6 +448,13 @@ gulp.task('deployFtp', () => {
 
 });
 
+gulp.task('deployProduction',  () => {
+  return gulpSSH
+    .exec(['cp -Rfu /www/assemblage.cz/jakubferenc/dist/ /www/jakubferenc.cz/'], {filePath: 'commands.log'})
+    .pipe(gulp.dest('logs'))
+})
+
+
 gulp.watch(['site.webmanifest'], gulp.series('pug'));
 gulp.watch('src/js/**/*.js', gulp.series('js', browserSync.reload));
 gulp.watch('src/scss/**/*.scss', gulp.series('sass'));
@@ -411,8 +462,11 @@ gulp.watch(['src/views/**/*.pug'], gulp.series('pug'));
 gulp.watch('src/*.html', gulp.series(browserSync.reload));
 gulp.watch(['src/images/**/*.+(png|jpg|jpeg|gif|svg)'], gulp.series('images'));
 
+// GULP:load data from wordpress REST API
+gulp.task('load-data', gulp.series('wp-load-data'));
+
 // GULP:build
-gulp.task('build', gulp.series('clean', 'mergeJson', 'wp-build', 'pug', 'sass', 'js', 'images'));
+gulp.task('build', gulp.series('clean', 'load-data', 'mergeJson', 'wp-build', 'pug', 'sass', 'js', 'images', 'copyToDist'));
 
 // GULP:default
-gulp.task('default', gulp.series('build', 'serve'));
+gulp.task('default', gulp.series('build'));

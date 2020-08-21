@@ -50,5 +50,5 @@ ehthumbs.db
 # Data
 data/data_merged.json
 
-# HistoryLab #
-!src/pdf/**/*.pdf
+# Wordpress #
+wordpress
