@@ -1,6 +1,35 @@
 {
   "events": [
-
+    {
+      "id": "",
+      "title": "BA (Hons) Graphic Design, Guest lecture, invited by MgA. Viktor Takáč",
+      "date": "2020-12-07",
+      "place": "Prague College, School of Art & Design",
+      "link": ""
+    },
+    {
+      "id": "",
+      "title": "Postfenomenologie Dona Ihdeho jako kritika „metafyziky“ techniky a materiality u Martina Heideggera",
+      "date": "2020-11-19",
+      "place": "Konference Postfenomenologie, mysl a média, Katedra filozofie, Fakulta filozofická Západočeské univerzity v Plzni",
+      "link": "https://postfenomenologie.zcu.cz/"
+    },
+    {
+      "id": "",
+      "author": "",
+      "title": "Postfenomenologie Dona Ihdeho jako kritika „metafyziky“ techniky a materiality u Martina Heideggera",
+      "date": "2020-11-05",
+      "place": "Kontinentální filozofie v minulosti a současnosti II., Katedra filozofie, Filozofická fakulta, Univerzita Palackého, Olomouc",
+      "link": "https://www.ff.upol.cz/kfi/aktuality/"
+    },
+    {
+      "id": "",
+      "title": "Brát McLuhana vážně",
+      "subtitle": "McLuhanův kognitivní a fenomenologický mód vztahu člověka a technologie",
+      "date": "2020-09-19",
+      "place": "HUMAIN konference, Brno, FAVU + VUT Brno, MUNI",
+      "link": "https://humain.space/"
+    },
     {
       "id": "",
       "title": "HCI International 2020 conference, Copenhagen",
@@ -10,7 +39,7 @@
     },
     {
       "id": "",
-      "title": "BA (Hons) Graphic Design, Guest lecture",
+      "title": "BA (Hons) Graphic Design, Guest lecture, invited by MgA. Viktor Takáč",
       "date": "2020-05",
       "place": "Prague College, School of Art & Design",
       "link": ""

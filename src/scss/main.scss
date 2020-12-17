@@ -133,6 +133,78 @@ h1, h2 {font-family: sans-serif;}
 /****************************************************/
 /* :POSTS: */
 
+.aside-articles {
+
+}
+
+.aside-subtle {
+
+  @include from($widescreen) {
+    opacity: .3;
+    &:hover {
+      opacity: .8;
+    }
+  }
+
+}
+
+.aside {
+  margin-bottom: 2em;
+
+.aside-title {
+  color: rgba(0,0,0,.3);
+}
+
+  .aside-footer {
+    margin-top: 1em;
+    @include fontSize(18px);
+    a {
+      border-bottom: 1px solid black;
+    }
+  }
+}
+
+.aside-categories {
+
+  .post-thumb-aside {
+    margin-bottom: 0em;
+    @include fontSize(22px);
+  }
+
+
+}
+
+.section-articles {
+  @include from($widescreen) {
+    padding-right: 8%;
+  }
+
+}
+
+.post-thumb-aside.post-thumb {
+
+  .title {
+    @include fontSize(25px);
+
+  }
+  .date {
+    @include fontSize(20px);
+
+  }
+
+}
+
+.post-thumb-aside-inline.post-thumb {
+  display: inline-block;
+  margin-right: 10px;
+  padding-right: 10px;
+  border-right: 1px solid black;
+
+  &:last-of-type {
+    border: none;
+  }
+}
+
 .post-thumb-list {
 
   margin-bottom: 1.5rem;
@@ -177,7 +249,7 @@ h1, h2 {font-family: sans-serif;}
     @include fontSize(30px);
     opacity: .50;
     line-height: 1.125;
-    margin-top: .5rem;
+    margin-top: .25em;
   }
 
   .post-content {
@@ -220,6 +292,11 @@ h1, h2 {font-family: sans-serif;}
 }
 
 .image-container {margin: 1em 0;}
+.image-description {
+  font-style: italic;
+  font-size: .9rem;
+}
+
 
 .section {
 

@@ -1,29 +1,46 @@
-extends ../_partials/layout.pug
+extends ../../_partials/layout.pug
 
 block vars
   - bodyClass = 'articles'
 
 block main
 
+  - yearsArray = []
+
+  each post in posts
+
+    -
+      const thisYear = post.date.split('-')[0];
+
+      if (yearsArray.indexOf(thisYear) === -1) {
+        yearsArray.push(thisYear);
+      }
+
+  - yearsArray.sort((a, b) => {return b-a});
+
+
   main
     .main-container.container
       .columns
         .column.is-two-thirds-widescreen.is-full
           .section.section-posts.section-articles
-            h2.section-title all articles
 
-            each article in posts
 
-              - const isFiction = article.categories.includes(303);
-              - const isPoetry = article.categories.includes(304);
-              - const isAcademic = article.categories.includes(8);
+            each year in yearsArray
 
-              if (!isAcademic && !isPoetry && !isFiction)
-                article.post-thumb
-                  h3.title
-                    a(href=`/article/${article.slug}`) #{article.title.rendered}
-                  - const dateCzech = makeCzechDateFromYMD(article.date.split('T')[0]);
-                  .date #{dateCzech}
+              h2.section-title(id=year) #{year}
+
+              each post in posts
+
+                - const isFiction = post.categories.includes(303);
+                - const isPoetry = post.categories.includes(304);
+                - const isAcademic = post.categories.includes(8);
+
+                - const thisArticleYear = post.date.split('-')[0];
+
+                if (!isAcademic && !isPoetry && !isFiction && thisArticleYear === year)
+
+                  +post_thumb(post)
 
         .column.is-one-third-widescreen.is-full
           .aside.aside-articles
@@ -53,26 +70,13 @@ block main
 
             h2.aside-title by year
 
-            - datesArray = []
-
-            each post in posts
-
-              -
-                const thisYear = post.date.split('-')[0];
-
-                if (datesArray.indexOf(thisYear) === -1) {
-                  datesArray.push(thisYear);
-                }
-
-            - datesArray.sort((a, b) => {return b-a});
-
-            each date in datesArray
+            each date in yearsArray
 
               span.post-thumb.post-thumb-aside.post-thumb-aside-inline
                 a(href=`/articles/by-year/#${date}`) #{date}
 
             .aside-footer
-              a(href="/articles/by-year") show all by date
+              a(href="#") show all by date
 
           .aside.aside-categories
 

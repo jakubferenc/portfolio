@@ -7,11 +7,25 @@ block vars
 
 block main
 
+  - yearsArray = []
+
+  each post in posts
+
+    -
+      const thisYear = post.date.split('-')[0];
+
+      if (yearsArray.indexOf(thisYear) === -1) {
+        yearsArray.push(thisYear);
+      }
+
+  - yearsArray.sort((a, b) => {return b-a});
+
   main
     .main-container.container
       .columns
         .column.is-full.is-two-thirds-widescreen
-          .section.section-posts
+          .section.section-posts.section-articles
+
 
             article.post-thumb
               h1.title #{title}
@@ -20,6 +34,64 @@ block main
 
               .post-content
                 | !{content}
+
+        .column.is-one-third-widescreen.is-full.aside-subtle
+          .aside.aside-articles
+            h2.aside-title recent articles
+
+            - let limit = 5;
+            - let current = 0;
+
+            each article in posts
+              if (current < limit)
+
+                - const isFiction = article.categories.includes(303);
+                - const isPoetry = article.categories.includes(304);
+                - const isAcademic = article.categories.includes(8);
+
+                if (!isAcademic && !isPoetry && !isFiction)
+                  article.post-thumb.post-thumb-aside
+                    h3.title
+                      a(href=`/article/${article.slug}`) #{article.title.rendered}
+                    - const dateCzech = makeCzechDateFromYMD(article.date.split('T')[0]);
+                    .date #{dateCzech}
+
+                    - current = current + 1
+
+
+          .aside.aside-categories
+
+            h2.aside-title by year
+
+            each date in yearsArray
+
+              span.post-thumb.post-thumb-aside.post-thumb-aside-inline
+                a(href=`/articles/by-year/#${date}`) #{date}
+
+            .aside-footer
+              a(href="#") show all by date
+
+          .aside.aside-categories
+
+            h2.aside-title categories
+
+            - limit = 100;
+            - current = 0;
+
+            each category in categories
+              if (current < limit)
+
+                - const disabledCategories = ['journal', 'text', 'fiction', 'poetry', 'academic', 'essay', 'esej'];
+
+                if (!disabledCategories.includes(category.slug) && category.count > 0)
+                  article.post-thumb.post-thumb-aside
+                    a(href=`/articles/category/#${category.slug}`) # #{category.name}
+
+                  - current = current + 1
+
+            .aside-footer
+              a(href="/articles/category") show all categories
+
 
 
 

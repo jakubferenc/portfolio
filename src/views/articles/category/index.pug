@@ -1,29 +1,44 @@
-extends ../_partials/layout.pug
+extends ../../_partials/layout.pug
 
 block vars
   - bodyClass = 'articles'
 
 block main
 
+  - yearsArray = []
+
+  each post in posts
+
+    -
+      const thisYear = post.date.split('-')[0];
+
+      if (yearsArray.indexOf(thisYear) === -1) {
+        yearsArray.push(thisYear);
+      }
+
+  - yearsArray.sort((a, b) => {return b-a});
+
   main
     .main-container.container
       .columns
         .column.is-two-thirds-widescreen.is-full
           .section.section-posts.section-articles
-            h2.section-title all articles
 
-            each article in posts
 
-              - const isFiction = article.categories.includes(303);
-              - const isPoetry = article.categories.includes(304);
-              - const isAcademic = article.categories.includes(8);
+            each category in categories
 
-              if (!isAcademic && !isPoetry && !isFiction)
-                article.post-thumb
-                  h3.title
-                    a(href=`/article/${article.slug}`) #{article.title.rendered}
-                  - const dateCzech = makeCzechDateFromYMD(article.date.split('T')[0]);
-                  .date #{dateCzech}
+              - const disabledCategories = ['journal', 'text', 'fiction', 'poetry', 'academic', 'essay', 'esej'];
+
+              if (!disabledCategories.includes(category.slug) && category.count > 0)
+
+                h2.section-title(id=category.slug) # #{category.name}
+
+                each post in posts
+
+                  if (post.categories.includes(category.id))
+
+                    +post_thumb(post)
+
 
         .column.is-one-third-widescreen.is-full
           .aside.aside-articles
@@ -40,39 +55,23 @@ block main
                 - const isAcademic = article.categories.includes(8);
 
                 if (!isAcademic && !isPoetry && !isFiction)
-                  article.post-thumb.post-thumb-aside
-                    h3.title
-                      a(href=`/article/${article.slug}`) #{article.title.rendered}
-                    - const dateCzech = makeCzechDateFromYMD(article.date.split('T')[0]);
-                    .date #{dateCzech}
 
-                    - current = current + 1
+                  +post_thumb(article)
+
+                  - current = current + 1
 
 
           .aside.aside-categories
 
             h2.aside-title by year
 
-            - datesArray = []
-
-            each post in posts
-
-              -
-                const thisYear = post.date.split('-')[0];
-
-                if (datesArray.indexOf(thisYear) === -1) {
-                  datesArray.push(thisYear);
-                }
-
-            - datesArray.sort((a, b) => {return b-a});
-
-            each date in datesArray
+            each date in yearsArray
 
               span.post-thumb.post-thumb-aside.post-thumb-aside-inline
                 a(href=`/articles/by-year/#${date}`) #{date}
 
             .aside-footer
-              a(href="/articles/by-year") show all by date
+              a(href="#") show all by date
 
           .aside.aside-categories
 

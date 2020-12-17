@@ -4,12 +4,55 @@
     {
       "id": "",
       "author": "",
+      "title": "Parikkův zelený obrat v mediální teorii",
+      "subtitle": "záslužná intence, problematická filosofie",
+      "date": "2020-12",
+      "source": "FERENC, Jakub, 2020. Parikkův zelený obrat v mediální teorii: záslužná intence, problematická filosofie. Iluminace. Praha: Národní filmový archiv, 32(2), 173-181. ISSN 0862-397X.",
+      "link": "https://link.springer.com/chapter/10.1007%2F978-3-030-59987-4_20",
+      "type": "review"
+    },
+    {
+      "id": "",
+      "author": "",
       "title": "Interfacing the city",
       "subtitle": "Media theory approach to cognitive mapping of the smart city through urban interfaces",
-      "date": "forthcoming",
-      "source": "",
-      "link": "",
+      "date": "2020-11",
+      "source": "Ferenc J. (2020) Interfacing the City. In: Stephanidis C., Duffy V.G., Streitz N., Konomi S., Krömker H. (eds) HCI International 2020 – Late Breaking Papers: Digital Human Modeling and Ergonomics, Mobility and Intelligent Environments. HCII 2020. Lecture Notes in Computer Science, vol 12429. Springer, Cham. https://doi.org/10.1007/978-3-030-59987-4_20",
+      "link": "https://link.springer.com/chapter/10.1007%2F978-3-030-59987-4_20",
       "type": "paper"
+    },
+    {
+      "id": "",
+      "author": "",
+      "title": "Postfenomenologie Dona Ihdeho jako kritika „metafyziky“ techniky a materiality u Martina Heideggera",
+      "subtitle": "",
+      "date": "2020-11-19",
+      "source": "Konference Postfenomenologie, mysl a média",
+      "place": "Konference Postfenomenologie, mysl a média, Katedra filozofie, Fakulta filozofická Západočeské univerzity v Plzni",
+      "link": "https://postfenomenologie.zcu.cz/",
+      "type": "conference"
+    },
+    {
+      "id": "",
+      "author": "",
+      "title": "Postfenomenologie Dona Ihdeho jako kritika „metafyziky“ techniky a materiality u Martina Heideggera",
+      "subtitle": "",
+      "date": "2020-11-05",
+      "source": "Kontinentální filozofie v minulosti a současnosti II.",
+      "place": "Kontinentální filozofie v minulosti a současnosti II., Katedra filozofie, Filozofická fakulta, Univerzita Palackého, Olomouc",
+      "link": "https://www.ff.upol.cz/kfi/aktuality/",
+      "type": "conference"
+    },
+    {
+      "id": "",
+      "author": "",
+      "title": "Brát McLuhana vážně",
+      "subtitle": "McLuhanův kognitivní a fenomenologický mód vztahu člověka a technologie",
+      "date": "2020-09-19",
+      "source": "HUMAIN konference, Brno, FAVU + VUT Brno, MUNI",
+      "place": "HUMAIN konference, Brno, FAVU + VUT Brno, MUNI",
+      "link": "https://humain.space/",
+      "type": "conference"
     },
     {
       "id": "",
@@ -71,6 +114,17 @@
       "source": "FERENC, Jakub, 2019. Interface reality. SVOBODA, Luboš a Tereza LIŠKOVÁ. <em>CARL</em>. Brno: Quatro print, s. 80-87. ISBN 978-80-270-7132-6.,",
       "link": "",
       "type": "popular"
+    },
+    {
+      "id": "",
+      "author": "",
+      "title": "Věda o interface v teorii rozšířené kognice na pozadí McLuhanovy mediální teorie",
+      "subtitle": "",
+      "date": "2019-02",
+      "source": "philosophia, studentská konference",
+      "place": "Filozofická fakulta, Univerzita Palackého v Olomouci",
+      "link": "https://www.ff.upol.cz/kfi/aktuality/",
+      "type": "conference"
     }
 
   ]

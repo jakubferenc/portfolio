@@ -10,17 +10,20 @@ block main
       .columns
         .column.is-half-widescreen.is-full
           .section.section-posts
-            h2.section-title gitpapers / book chapters
+            h2.section-title papers / book chapters / reviews
 
             each publication in publications
 
-              if (publication.type == "paper" || publication.type == "book chapter")
+              - const allowedTypes = ['paper', 'book chapter', 'review'];
+
+              if ( allowedTypes.includes(publication.type) )
+
                 article.post-thumb-list
 
                   .title
-                    a(href=`${publication.link}`) #{publication.title}
-                    if (publication.subtitle)
-                      | : #{publication.subtitle}
+                    a(target="_blank" href=`${publication.link}`) #{publication.title}
+                      if (publication.subtitle)
+                        | : #{publication.subtitle}
                   p.meta
                     if (publication.author !== "")
                       <em>(#{publication.author})</em><br>

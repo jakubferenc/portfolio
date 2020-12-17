@@ -4,7 +4,7 @@
 // ==========================================
 // gulp-dev-dependencies
 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 const gulp = require('gulp');
 // check package.json for gulp plugins
@@ -30,11 +30,11 @@ const version = pkg.version;
 
 const jsonNastaveni = JSON.parse(fs.readFileSync('./nastaveni.json'));
 
-const WPAPI = require( 'wpapi' );
+const WPAPI = require('wpapi');
 
 const ftpSettings = require('./ftp.json');
-const ftp = require( 'vinyl-ftp' );
-const changed = require('gulp-changed')
+const ftp = require('vinyl-ftp');
+const changed = require('gulp-changed');
 
 
 const GulpSSH = require('gulp-ssh')
@@ -43,7 +43,7 @@ const configSSH = {
   host: 'ssh.wellnessfood.savana-hosting.cz',
   port: 9136,
   username: 'user',
-  privateKey: fs.readFileSync('C:/Users/jakub/.ssh/id_rsa')
+  privateKey: fs.readFileSync('/Users/jakubferenc/.ssh/id_rsa')
 }
 
 const gulpSSH = new GulpSSH({
@@ -272,9 +272,9 @@ const prepareArticleItem = (item) => {
 
   // prepare tags
   thisItem.tags = item.tags;
-  thisItem.tags.forEach( (tagID, index, arr) => {
+  thisItem.tags.forEach((tagID, index, arr) => {
 
-    allTags.forEach( (tagFromAllTags) => {
+    allTags.forEach((tagFromAllTags) => {
       if (tagFromAllTags.id == tagID) {
         arr[index] = tagFromAllTags.name;
       }
@@ -290,7 +290,7 @@ const prepareArticleItem = (item) => {
     thisItem.categoryCssClass = 'fiction-poetry';
   } else if ( isPoetry ) {
     thisItem.categoryCssClass = 'fiction-poetry poetry';
-  } else*/ if ( isAcademic ) {
+  } else*/ if (isAcademic) {
     thisItem.categoryCssClass = 'academic';
   } else {
     thisItem.categoryCssClass = 'articles';
@@ -303,7 +303,10 @@ const prepareArticleItem = (item) => {
         (file) => thisItem
       )
     )
-    .pipe($.pug({ pretty: true }))
+    .pipe(
+      $.data(() => JSON.parse(fs.readFileSync('./data/data_merged.json')))
+    )
+    .pipe($.pug(config.pug))
     .pipe($.rename('index.html'))
     .pipe(gulp.dest(`./dist/article/${thisItem.slug}`));
 
@@ -311,6 +314,8 @@ const prepareArticleItem = (item) => {
   return thisItem;
 
 };
+
+
 
 // ==========================================
 // 4. TASKS
@@ -335,7 +340,7 @@ gulp.task('reload', () => {
 
 // pug:index & pug:home (pug -> html)
 gulp.task('pug', () => {
-  return gulp.src(['src/views/**/*.pug', '!src/views/article.pug'])
+  return gulp.src(['src/views/**/*.pug', '!src/views/article.pug', '!src/views/_partials'])
     .pipe(
       $.data(() => JSON.parse(fs.readFileSync('./data/data_merged.json')))
     )
@@ -344,8 +349,7 @@ gulp.task('pug', () => {
     .pipe(browserSync.stream());
   });
 
-gulp.watch(['src/views/**/*.pug', '!src/views/article.pug'], gulp.series('pug', 'reload'));
-gulp.watch('nastaveni.json', gulp.series('pug', 'reload'));
+
 
 // SASS
 gulp.task('sass', () => {
@@ -362,14 +366,11 @@ gulp.task('sass', () => {
       stream: true,
     }));
 });
-gulp.watch('src/scss/**/*.scss', gulp.series('sass', 'reload'));
-
 
 gulp.task('js', async () => {
   const bundle = await rollup(config.rollup.bundle);
   bundle.write(config.rollup.output);
 });
-gulp.watch('src/js/**/*.js', gulp.series('js', 'reload'));
 
 
 
@@ -389,25 +390,37 @@ gulp.task('wp-load-data',  async () => {
 
   const wp = new WPAPI({ endpoint: 'https://jakubferenc.cz/wordpress/index.php/wp-json' });
 
-  wp.posts('post').perPage(100).then( async ( data ) => {
+  wp.posts('post').perPage(100).then(async (data) => {
     const obj = {};
     obj.posts = data;
     fs.writeFileSync('./data/posts.json', JSON.stringify(obj));
 
     await Promise.resolve(true);
 
-  }).catch( ( err ) => {
+  }).catch((err) => {
     // handle error
   });
 
-  wp.tags().perPage(100).then( async ( data ) => {
+  wp.tags().perPage(100).then(async (data) => {
     const obj = {};
     obj.tags = data;
     fs.writeFileSync('./data/tags.json', JSON.stringify(obj));
 
     await Promise.resolve(true);
 
-  }).catch( ( err ) => {
+  }).catch((err) => {
+    // handle error
+  });
+
+  wp.categories().perPage(100).then(async (data) => {
+    const obj = {};
+    obj.categories = data;
+    obj.categories.sort((a, b) => (a.count > b.count) ? -1 : 1);
+    fs.writeFileSync('./data/categories.json', JSON.stringify(obj));
+
+    await Promise.resolve(true);
+
+  }).catch((err) => {
     // handle error
   });
 
@@ -419,7 +432,6 @@ gulp.task('wp-build', async () => {
 
     data.posts.forEach((post) => {
       prepareArticleItem(post);
-
     });
 
     await Promise.resolve(true);
@@ -427,13 +439,13 @@ gulp.task('wp-build', async () => {
 });
 
 gulp.task('copyToDist', () => {
-  return gulp.src('.htaccess')
-  .pipe(gulp.dest('./dist/'));
+  return gulp.src('./.htaccess')
+  .pipe(gulp.dest('dist'));
 });
 
 gulp.task('deployFtp', () => {
 
-  const conn = ftp.create( {
+  const conn = ftp.create({
     host: ftpSettings.ftp.host,
     user: ftpSettings.ftp.user,
     password: ftpSettings.ftp.password,
@@ -441,7 +453,7 @@ gulp.task('deployFtp', () => {
     timeOffset: ftpSettings.ftp.time
   });
 
-  return gulp.src( ftpSettings.globs, {base: ftpSettings.base, buffer: false})
+  return gulp.src(ftpSettings.globs, {base: ftpSettings.base, buffer: false})
     .pipe(conn.newerOrDifferentSize(ftpSettings.ftp.dir))
     .pipe(conn.dest(ftpSettings.ftp.dir))
     .pipe(browserSync.stream());
@@ -454,13 +466,17 @@ gulp.task('deployProduction',  () => {
     .pipe(gulp.dest('logs'))
 })
 
+gulp.task('watch',  (cb) => {
 
-gulp.watch(['site.webmanifest'], gulp.series('pug'));
-gulp.watch('src/js/**/*.js', gulp.series('js', browserSync.reload));
-gulp.watch('src/scss/**/*.scss', gulp.series('sass'));
-gulp.watch(['src/views/**/*.pug'], gulp.series('pug'));
-gulp.watch('src/*.html', gulp.series(browserSync.reload));
-gulp.watch(['src/images/**/*.+(png|jpg|jpeg|gif|svg)'], gulp.series('images'));
+  gulp.watch('src/js/**/*.js', gulp.series('js', 'reload'));
+  gulp.watch(['src/views/**/*.pug', '!src/views/article.pug'], gulp.series('pug'));
+  gulp.watch('nastaveni.json', gulp.series('pug'));
+  gulp.watch('src/scss/**/*.scss', gulp.series('sass'));
+  gulp.watch(['site.webmanifest'], gulp.series('pug'));
+  gulp.watch('src/*.html', gulp.series(browserSync.reload));
+  gulp.watch(['src/images/**/*.+(png|jpg|jpeg|gif|svg)'], gulp.series('images'));
+  cb();
+});
 
 // GULP:load data from wordpress REST API
 gulp.task('load-data', gulp.series('wp-load-data'));
@@ -469,4 +485,4 @@ gulp.task('load-data', gulp.series('wp-load-data'));
 gulp.task('build', gulp.series('clean', 'load-data', 'mergeJson', 'wp-build', 'pug', 'sass', 'js', 'images', 'copyToDist'));
 
 // GULP:default
-gulp.task('default', gulp.series('build'));
+gulp.task('default', gulp.series('build', 'watch'));

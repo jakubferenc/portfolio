@@ -1,0 +1,7 @@
+mixin post_thumb(article)
+
+  article.post-thumb.post-thumb-aside
+    h3.title
+      a(href=`/article/${article.slug}`) #{article.title.rendered}
+    - const dateCzech = makeCzechDateFromYMD(article.date.split('T')[0]);
+    .date #{dateCzech}
